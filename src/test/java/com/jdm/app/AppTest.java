@@ -30,8 +30,4 @@ public class AppTest extends TestCase {
     public void testApp() {
         assertTrue(true);
     }
-
-    public void testAppText() {
-        assertTrue(App.text == "Hello World");
-    }
 }
