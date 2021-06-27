@@ -4,7 +4,7 @@
 
 Java Development Manager a.k.a. JDM is a universal CLI tool for all your Java needs.
 
-Watch this space for more details!
+Watch this space for more details!!
 
 ## Development
 
