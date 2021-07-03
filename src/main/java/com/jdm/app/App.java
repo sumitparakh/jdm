@@ -1,12 +1,15 @@
 package com.jdm.app;
 
-import com.beust.jcommander.JCommander;
-import com.beust.jcommander.Parameter;
-import com.beust.jcommander.ParameterException;
-
-import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
+
+import com.jdm.app.properties.PropertiesWrapper;
+
+import org.apache.commons.cli.*;
 
 /**
  * Hello world!
@@ -15,23 +18,22 @@ import org.apache.logging.log4j.Logger;
 public class App {
     public static final Logger LOG = LogManager.getLogger(App.class);
 
-    @Parameter(names = "-version", description = "Get version detail of jdm!", help = true)
-    private String version = "1.0.0";
+    private static final String VERSION_KEY = "version";
 
-    public static void main(String[] args) {
-        App app = new App();
-        try {
-            JCommander.newBuilder().addObject(app).build().parse(args);
-        } catch (ParameterException exception) {
-            if (exception.getMessage().indexOf("-version") <= -1) {
-                LOG.log(Level.ERROR, exception.getMessage());
-                exception.getJCommander().usage();
-            }
+    public static void main(String[] args) throws ParseException, IOException {
+
+        Options options = new Options();
+        options.addOption(VERSION_KEY, "Display version!");
+
+        // Create a parser
+        CommandLineParser parser = new DefaultParser();
+
+        // Parse the options passed as command line arguments
+        CommandLine cmd = parser.parse(options, args);
+
+        Properties props = PropertiesWrapper.getProperties();
+        if (cmd.hasOption(VERSION_KEY)) {
+            System.out.println("Version: " + props.getProperty(VERSION_KEY));
         }
-        app.run();
-    }
-
-    public void run() {
-        LOG.log(Level.INFO, version);
     }
 }
